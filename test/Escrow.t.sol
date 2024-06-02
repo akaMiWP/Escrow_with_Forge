@@ -26,4 +26,11 @@ contract EscrowTest is Test {
         assertEq(shipping.isOrderCompleted, isOrderCompleted);
         assertEq(shipping.shippingAddress, shippingAddreess);
     }
+
+    function testConfirmOrderNotPassedUsingBuyer() public {
+        vm.prank(buyer);
+        Escrow.Shipping memory shipping = Escrow.Shipping(true, "1234");
+        vm.expectRevert("Only the seller that is able to confirm the order");
+        escrow.confirmOrder(shipping);
+    }
 }
