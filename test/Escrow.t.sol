@@ -40,4 +40,14 @@ contract EscrowTest is Test {
         vm.expectRevert("Only the seller that is able to confirm the order");
         escrow.confirmOrder(shipping);
     }
+
+    function testCompletedEscrow() public {
+        vm.prank(seller);
+        Escrow.Shipping memory shipping = Escrow.Shipping(true, "1234");
+        escrow.confirmOrder(shipping);
+
+        vm.prank(inspector);
+        escrow.completeEscrow();
+        assertEq(escrow.isEscrowCompleted(), true);
+    }
 }
