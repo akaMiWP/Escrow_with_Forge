@@ -3,7 +3,6 @@
 pragma solidity ^0.8.0;
 
 contract Escrow {
-
     address public buyer;
     address public seller;
     address public inspector;
@@ -17,17 +16,20 @@ contract Escrow {
     bool public isEscrowCompleted;
     uint public productPrice;
 
-    constructor(address _seller, address _inpsector, uint _productPrice) payable {
+    constructor(address _seller, address _inspector) payable {
         buyer = msg.sender;
         seller = _seller;
-        inspector = _inpsector;
-        productPrice = _productPrice;
-        require(msg.value >= productPrice, "Escrow is not correctly set");
+        inspector = _inspector;
+        productPrice = msg.value;
+        require(msg.value > 0, "Escrow is not correctly set");
     }
 
     function confirmOrder(Shipping calldata _shipping) external {
         require(!isEscrowCompleted, "Escrow has been completed");
-        require(msg.sender == seller, "Only the seller that is able to confirm the order");
+        require(
+            msg.sender == seller,
+            "Only the seller that is able to confirm the order"
+        );
         shipping = _shipping;
     }
 
