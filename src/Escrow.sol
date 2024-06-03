@@ -2,11 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-contract Escrow {
-    address public buyer;
-    address public seller;
-    address public inspector;
+import "./EscrowBase.sol";
 
+contract Escrow is EscrowBase {
     struct Shipping {
         bool isOrderCompleted;
         string shippingAddress;
