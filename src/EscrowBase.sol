@@ -13,12 +13,12 @@ contract EscrowBase {
     }
 
     modifier onlySeller() {
-        require(msg.sender == buyer, "You are not the seller");
+        require(msg.sender == seller, "You are not the seller");
         _;
     }
 
     modifier onlyInspector() {
-        require(msg.sender == buyer, "You are not the inspector");
+        require(msg.sender == inspector, "You are not the inspector");
         _;
     }
 }

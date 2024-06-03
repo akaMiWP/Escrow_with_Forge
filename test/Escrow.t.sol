@@ -30,14 +30,14 @@ contract EscrowTest is Test {
     function testConfirmOrderRevertedUsingBuyer() public {
         vm.prank(buyer);
         Escrow.Shipping memory shipping = Escrow.Shipping(true, "1234");
-        vm.expectRevert("Only the seller that is able to confirm the order");
+        vm.expectRevert("You are not the seller");
         escrow.confirmOrder(shipping);
     }
 
     function testConfirmOrderRevertedUsingInspector() public {
         vm.prank(inspector);
         Escrow.Shipping memory shipping = Escrow.Shipping(true, "1234");
-        vm.expectRevert("Only the seller that is able to confirm the order");
+        vm.expectRevert("You are not the seller");
         escrow.confirmOrder(shipping);
     }
 

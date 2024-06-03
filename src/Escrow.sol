@@ -22,18 +22,13 @@ contract Escrow is EscrowBase {
         require(msg.value > 0, "Escrow is not correctly set");
     }
 
-    function confirmOrder(Shipping calldata _shipping) external {
+    function confirmOrder(Shipping calldata _shipping) external onlySeller {
         require(!isEscrowCompleted, "Escrow has been completed");
-        require(
-            msg.sender == seller,
-            "Only the seller that is able to confirm the order"
-        );
         shipping = _shipping;
     }
 
-    function completeEscrow() external {
+    function completeEscrow() external onlyInspector {
         require(!isEscrowCompleted, "Escrow has been completed");
-        require(msg.sender == inspector, "Reserved only for the inspector");
         require(shipping.isOrderCompleted, "An order hasn't been completed");
         (bool s, ) = seller.call{value: productPrice}("");
         require(s, "Unable to send money");
