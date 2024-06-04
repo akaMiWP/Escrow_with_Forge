@@ -21,4 +21,8 @@ contract EscrowBase {
         require(msg.sender == inspector, "You are not the inspector");
         _;
     }
+
+    constructor() payable {
+        require(msg.value > 0, "Escrow is not correctly set");
+    }
 }

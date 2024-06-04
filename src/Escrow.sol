@@ -19,7 +19,6 @@ contract Escrow is EscrowBase {
         seller = _seller;
         inspector = _inspector;
         productPrice = msg.value;
-        require(msg.value > 0, "Escrow is not correctly set");
     }
 
     function confirmOrder(Shipping calldata _shipping) external onlySeller {
