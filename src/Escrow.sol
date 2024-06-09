@@ -14,6 +14,11 @@ contract Escrow is EscrowBase {
     bool public isEscrowCompleted;
     uint public productPrice;
 
+    modifier escrowNotBeCompleted() {
+        require(!isEscrowCompleted, "Escrow has been completed");
+        _;
+    }
+
     constructor(address _seller, address _inspector) payable {
         buyer = msg.sender;
         seller = _seller;
@@ -21,13 +26,13 @@ contract Escrow is EscrowBase {
         productPrice = msg.value;
     }
 
-    function confirmOrder(Shipping calldata _shipping) external onlySeller {
-        require(!isEscrowCompleted, "Escrow has been completed");
+    function confirmOrder(
+        Shipping calldata _shipping
+    ) external onlySeller escrowNotBeCompleted {
         shipping = _shipping;
     }
 
-    function completeEscrow() external onlyInspector {
-        require(!isEscrowCompleted, "Escrow has been completed");
+    function completeEscrow() external onlyInspector escrowNotBeCompleted {
         require(shipping.isOrderCompleted, "An order hasn't been completed");
         (bool s, ) = seller.call{value: productPrice}("");
         require(s, "Unable to send money");
